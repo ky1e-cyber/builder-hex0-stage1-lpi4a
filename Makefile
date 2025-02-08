@@ -1,5 +1,7 @@
 CROSS_COMPILE ?= riscv64-elf-
 
+all: image_lpi4a image_qemu
+
 image_lpi4a: image_lpi4a.bin
 
 image_qemu: image_qemu.bin
