@@ -87,10 +87,10 @@ _start:
                         addi s2, s2, -(DIGIT_0)
                         j general_handle                        
                 handle_lower:
-                        addi s2, s2, -(A_LOWERCASE)
+                        addi s2, s2, -(A_LOWERCASE - 10)
                         j general_handle
                 handle_upper:
-                        addi s2, s2, -(A_UPPERCASE)
+                        addi s2, s2, -(A_UPPERCASE - 10)
 
                 general_handle:
                         slli s4, s4, 4

@@ -1,28 +1,22 @@
 CROSS_COMPILE ?= riscv64-elf-
 
-all: image
+image_lpi4a: image_lpi4a.bin
 
-image: image.bin
+image_qemu: image_qemu.bin
 
-image.bin: stage1.bin payload.hex0
-	cat stage1.bin payload.hex0 > image.bin
+image_lpi4a.bin: stage1.bin
+	cat stage1.bin payload_lpi4a.hex0 > image_lpi4a.bin
 
-stage1.bin: src/stage1.S
+image_qemu.bin: stage1.bin
+	cat stage1.bin payload_qemu.hex0 > image_qemu.bin
+
+stage1.bin:
 	$(CROSS_COMPILE)gcc -march=rv64gc\
 					-nostdlib\
 					-ffreestanding\
 					-Ttext 0\
 					./src/stage1.S -o stage1.elf
-	$(CROSS_COMPILE)objcopy -O binary stage1.elf stage1.bin
-	
-payload.hex0: src/payload.S
-	$(CROSS_COMPILE)gcc -march=rv64gc\
-					-nostdlib\
-					-ffreestanding\
-					-Ttext 0 \
-					./src/payload.S -o payload.elf	
-	$(CROSS_COMPILE)objcopy -O binary payload.elf payload.bin
-	./bin-to-hex0.sh payload.bin payload.hex0
+	$(CROSS_COMPILE)objcopy -O binary stage1.elf stage1.bin	
 
 clean:
-	rm -f image.bin stage1.bin stage1.elf payload.hex0 payload.bin payload.elf
+	rm -f image_lpi4a.bin image_qemu.bin stage1.bin stage1.elf
